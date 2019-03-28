@@ -1,4 +1,4 @@
 # galaxy-tool-temp-2019
 Repo to test adjusted tools for the newest galaxy
 
-## galaxy-create-tool
+## cutadapt primer trimmer
