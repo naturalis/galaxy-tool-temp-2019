@@ -1,0 +1,111 @@
+<tool id="cutadapt_primer_trim" name="Trim primers with cutadapt" version="0.1.0">
+    <requirements>
+        <requirement type="package">cutadapt</requirement>
+        <requirement type="package" version="2.7">python</requirement>
+        <requirement type="package">biopython</requirement>
+    </requirements>
+    <command><![CDATA[
+      bash '$__tool_directory__/cutadapt.sh'
+      $input
+      $type
+      	#if $setting_mode.mode == "forward_mode"
+      		$setting_mode.mode
+      		$setting_mode.forward_primer
+      		$setting_mode.error_rate
+      		$setting_mode.min_length
+      	    $setting_mode.output_untrimmed
+      		$setting_mode.overlap
+      	#end if
+      	#if $setting_mode.mode == "reverse_mode"
+      		$setting_mode.mode
+      		$setting_mode.reverse_primer
+      		$setting_mode.error_rate
+      		$setting_mode.min_length
+      	    $setting_mode.output_untrimmed
+      		$setting_mode.overlap
+      	#end if
+      	#if $setting_mode.mode == "both_mode" or $setting_mode.mode == "both_mode_anchored" or $setting_mode.mode == "both_three_optional_mode"
+      		$setting_mode.mode
+      		$setting_mode.forward_primer
+      		$setting_mode.reverse_primer
+      		$setting_mode.error_rate
+      		$setting_mode.min_length
+      	    $setting_mode.output_untrimmed
+      		$setting_mode.overlap
+      	#end if
+
+      $output_zip
+      $output_log
+      $output_zip_untrimmed
+    ]]></command>
+    <macros>
+	<macro name="forward">
+		<param name="overlap" type="integer" label="Minimum number of bases that need to match" value="5" min="1" max="50"/>
+		<param name="error_rate" type="float" label="maximum allowed error rate for primer trimming"  value="0.2" min="0.0" max="1"/>
+		<param name="min_length" type="integer" label="Minimum read length"  value="10" min="0" max="999"/>
+		<param name="forward_primer" type="text" size="30" label="Forward primer sequence" />
+		<param name="output_untrimmed" type="boolean" label="Output untrimmed sequences" checked="no" truevalue="yes" falsevalue="no"/>
+	</macro>
+	<macro name="reverse">
+		<param name="overlap" type="integer" label="Minimum number of bases that need to match" value="5" min="1" max="50"/>
+		<param name="error_rate" type="float" label="maximum allowed error rate for primer trimming"  value="0.2" min="0.0" max="1"/>
+		<param name="min_length" type="integer" label="Minimum read length"  value="10" min="0" max="999"/>
+		<param name="reverse_primer" type="text" size="30" label="reverse primer sequence" />
+		<param name="output_untrimmed" type="boolean" label="Output untrimmed sequences" checked="no" truevalue="yes" falsevalue="no"/>
+	</macro>
+	<macro name="both">
+		<param name="overlap" type="integer" label="Minimum number of bases that need to match" value="5" min="1" max="50"/>
+		<param name="error_rate" type="float" label="maximum allowed error rate for primer trimming"  value="0.2" min="0.0" max="1"/>
+		<param name="min_length" type="integer" label="Minimum read length"  value="10" min="0" max="999"/>
+		<param name="forward_primer" type="text" size="30" label="Forward primer sequence" />
+		<param name="reverse_primer" type="text" size="30" label="reverse primer sequence" />
+		<param name="output_untrimmed" type="boolean" label="Output untrimmed sequences" checked="no" truevalue="yes" falsevalue="no"/>
+	</macro>
+	<macro name="advanced">
+		<param name="command" type="text" size="300" label="Advanced command" />
+	</macro>
+</macros>
+    <inputs>
+      <param format="zip" name="input" type="data" label="zip file containing fasta or fastq files"/>
+
+				<param name="type" type="select" multiple="false" label="Input type">
+					<option value="gz">gzip files</option>
+					<option value="FASTQ" selected="true">fastq files</option>
+				</param>
+					<conditional name="setting_mode">
+					<param name="mode" type="select" multiple="false" label="Settings mode">
+						<option value="forward_mode" selected="true">Trim forward primer only</option>
+						<option value="reverse_mode">Trim reverse primer only</option>
+						<option value="both_mode">Both need to be present</option>
+						<option value="both_mode_anchored">Both need to be present and are anchored</option>
+						<option value="both_three_optional_mode">Forward needs to be present, reverse is optional</option>
+
+					</param>
+					<when value="forward_mode">
+						<expand macro="forward"/>
+					</when>
+					<when value="reverse_mode">
+						<expand macro="reverse"/>
+					</when>
+					<when value="both_mode">
+						<expand macro="both"/>
+					</when>
+					<when value="both_mode_anchored">
+						<expand macro="both"/>
+					</when>
+					<when value="both_three_optional_mode">
+						<expand macro="both"/>
+					</when>
+				</conditional>
+    </inputs>
+    <outputs>
+      <data format="zip" name="output_zip" label="$input.display_name zip" />
+<data format="txt" name="output_log" label="$input.display_name log" />
+<data format="zip" name="output_zip_untrimmed" label="$input.display_name untrimmed zip">
+  <filter>setting_mode['output_untrimmed']</filter>
+</data>
+    </outputs>
+    <help><![CDATA[
+        Trim primers
+    ]]></help>
+</tool>
