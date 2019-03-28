@@ -1,0 +1,57 @@
+<tool id="flash merger" name="Merge reads">
+<description>Merge reads</description>
+    <requirements>
+        <requirement type="package" version="1.2.11">flash</requirement>
+        <requirement type="package" version="2.7">python</requirement>
+	<requirement type="package">biopython</requirement>
+    </requirements>
+<command>
+<![CDATA[
+bash '$__tool_directory__/flash.sh'
+$input
+$output_zip
+$output_log
+$input2 
+$input3
+$minoverlap
+$mismatch
+$maxoverlap]]>
+
+</command>
+
+<inputs>
+<param format="zip" name="input" type="data" label="zip file containing fasta or fastq files"/>
+
+				<param name="input2" type="select" multiple="false" label="Input type">
+					<option value="gz" selected="true">gzip files</option>
+					<option value="FASTQ">fastq files</option>
+				</param>
+				<param name="minoverlap" type="integer" label="Minimum overlap" value="10" min="1" max="500"/>
+				<param name="maxoverlap" type="integer" label="Maximum overlap" value="300" min="1" max="500"/>	
+				<param name="mismatch" type="float" label="mismatch ratio"  value="0.25" min="0.0" max="1"/>
+                <param name="input3" type="select" multiple="false" label="Output">
+					<option value="discard" selected="true">Output merged reads only</option>
+                    <option value="add">Add non-merged forward reads to merged reads</option>
+                    <option value="seperate">Merged reads and non-merged forward reads in seperated files</option>
+                    
+                </param>
+</inputs>
+
+	
+<outputs>
+	<data format="zip" type="data" name="output_zip" label="$input.display_name zip" />
+	<data format="txt" name="output_log" label="$input.display_name log" />
+
+</outputs>
+<tests>
+<test>
+<param name="test_input" value="test_input.txt"/>
+<output name="test_outout" file="test_output.txt"/>
+</test>
+</tests>
+<help>
+<![CDATA[
+        merge
+    ]]>
+</help>
+</tool>
