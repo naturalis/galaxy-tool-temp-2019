@@ -91,11 +91,11 @@ def usearch_cluster(outputFolder):
     admin_log(outputFolder, out=out, error=error, function="sortbysize")
 
     if args.cluster == "cluster_otus":
-        out, error = Popen(["usearch11", "-cluster_otus", outputFolder+"/uniques_sorted.fa", "-uparseout", outputFolder+"/cluster_file.txt", "-otus", outputFolder+"/otu_sequences.fa", "-relabel", "Otu", "-fulldp"], stdout=PIPE, stderr=PIPE).communicate()
+        out, error = Popen(["/home/galaxy/Tools/usearch/usearch11", "-cluster_otus", outputFolder+"/uniques_sorted.fa", "-uparseout", outputFolder+"/cluster_file.txt", "-otus", outputFolder+"/otu_sequences.fa", "-relabel", "Otu", "-fulldp"], stdout=PIPE, stderr=PIPE).communicate()
         admin_log(outputFolder, out=out, error=error, function="cluster_otus")
 
     if args.cluster == "unoise":
-        out, error = Popen(["usearch11","-unoise3", outputFolder+"/uniques_sorted.fa", "-unoise_alpha", args.unoise_alpha, "-minsize", args.abundance_minsize, "-tabbedout", outputFolder+"/cluster_file.txt", "-zotus", outputFolder+"/zotususearch.fa"], stdout=PIPE, stderr=PIPE).communicate()
+        out, error = Popen(["/home/galaxy/Tools/usearch/usearch11","-unoise3", outputFolder+"/uniques_sorted.fa", "-unoise_alpha", args.unoise_alpha, "-minsize", args.abundance_minsize, "-tabbedout", outputFolder+"/cluster_file.txt", "-zotus", outputFolder+"/zotususearch.fa"], stdout=PIPE, stderr=PIPE).communicate()
         admin_log(outputFolder, out=out, error=error, function="unoise")
         count = 1
         with open(outputFolder + "/zotususearch.fa", "rU") as handle, open(outputFolder + "/otu_sequences.fa", 'a') as newotu:

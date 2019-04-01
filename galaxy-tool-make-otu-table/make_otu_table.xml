@@ -1,11 +1,17 @@
 <tool id="make_otu_table" name="Make otu table">
 <description>Make an otu or zotu table</description>
-<command interpreter="bash">
-make_otu_table.sh
+    <requirements>
+        <requirement type="package" version="2.7">python</requirement>
+	<requirement type="package">biopython</requirement>
+	<requirement type="package">vsearch</requirement>
+
+    </requirements>
+<command>
+<![CDATA[
+bash '$__tool_directory__/make_otu_table.sh'
 $input
 $input_type
 $algo.cluster_algo
-<!--output files-->
 #if not $output_label
 	$output_zip
 	$output_log
@@ -35,7 +41,7 @@ $algo.cluster_algo
 	#if $algo.cluster_algo == "cluster_otus"
 	    $algo.minsize
 	#end if
-
+	]]>
 </command>
 <macros>
 	<macro name="output_file_selection">
@@ -101,7 +107,7 @@ $algo.cluster_algo
 				</conditional>
 				<param name="output_label" type="text" value="History" label="History output name" />
 </inputs>
-<code file="/home/galaxy/Tools/galaxy-tool-make-otu-table/dynamic_xml.py"/>
+<code file="/home/galaxy/Tools/galaxy-tool-temp-2019/galaxy-tool-make-otu-table/dynamic_xml.py"/>
 
 <outputs>
 	<data format="zip" type="data" name="output_zip" label="$input.display_name zip">
@@ -144,6 +150,5 @@ $algo.cluster_algo
 </test>
 </tests>
 <help>
-Pipeline for making otu tables
 </help>
 </tool>
