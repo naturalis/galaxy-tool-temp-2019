@@ -1,7 +1,11 @@
 <tool id="blastn" name="Identify reads with blastn and find taxonomy">
     <description>blastn wrapper and taxonomy finder</description>
-    <command interpreter="bash">
-        blastn.sh
+    <requirements>
+        <requirement type="package" version="2.7">python</requirement>
+        <requirement type="package">biopython</requirement>
+    </requirements>
+    <command><![CDATA[
+        bash '$__tool_directory__/blastn.sh'
         $input_type.type
         $input_type.input
         $database_type.database
@@ -24,7 +28,7 @@
         $identity
         $blast_output_original
         $database_type.type
-
+        ]]>
     </command>
     <macros>
         <macro name="zip_file_input_macro">
@@ -43,8 +47,9 @@
         </macro>
         <macro name="local_databases">
         <param name="database" type="select" multiple="true" label="Database">
-            <option value="/home/galaxy/ExtraRef/blast_reference/bold/bold_26_11_2018_taxonomy_filtered.fa" label="bold">BOLD</option>
-            <!-- <option value="/home/galaxy/ExtraRef/blast_reference/CO1/CO1.fa" label="DatabaseCO1">CO1 (Genbank 21-08-2018)</option>
+	    <option value="/home/galaxy/Tools/galaxy-tool-temp-2019/galaxy-tool-BLAST/utilities/silva/output/SILVA/SILVA_132_SSUParc_tax_silva_taxonomy.fasta">SILVA</option>
+            <!-- <option value="/home/galaxy/ExtraRef/blast_reference/bold/bold_26_11_2018_taxonomy_filtered.fa" label="bold">BOLD</option>
+            <option value="/home/galaxy/ExtraRef/blast_reference/CO1/CO1.fa" label="DatabaseCO1">CO1 (Genbank 21-08-2018)</option>
             <option value="/home/galaxy/ExtraRef/blast_reference/silva/SILVA_132_SSUParc_tax_silva_taxonomy.fasta">SILVA SSU Parc</option>
                     
             <option value="/home/galaxy/ExtraRef/blast_reference/silva/SILVA_132_SSUParc_tax_silva.fasta">SILVA SSU 16S</option>

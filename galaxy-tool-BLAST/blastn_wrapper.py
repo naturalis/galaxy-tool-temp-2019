@@ -84,7 +84,7 @@ def create_blast_command(query, output_name):
         outformat = "6 qseqid stitle sacc staxid pident qcovs evalue bitscore"
     else:
         outformat = args.outfmt.strip()
-    base_command = ["blastn2.6.0", "-query", query, "-db", args.blast_database.strip().replace(","," "),
+    base_command = ["/home/galaxy/Tools/ncbi-blast-2.8.1+/bin/blastn", "-query", query, "-db", args.blast_database.strip().replace(","," "),
                     "-task", args.task.strip(), "-num_threads", "2", "-max_hsps", "1", "-perc_identity", args.identity, "-out", args.out_folder.strip() + "/files/" + output_name.strip(), "-outfmt", outformat]
     #the taxidlist option is not used by galaxy because blast 2.8 is still in alpha version
     #add a taxonid list parameter to the blast command
@@ -127,7 +127,7 @@ def blast_fasta():
 
 def make_user_database():
     """This method creates a blast database from a user fasta file"""
-    createblast_out, createblast_error = Popen(["makeblastdb", "-in", args.blast_database, "-dbtype", "nucl"], stdout=PIPE, stderr=PIPE).communicate()
+    createblast_out, createblast_error = Popen(["/home/galaxy/Tools/ncbi-blast-2.8.1+/bin/makeblastdb", "-in", args.blast_database, "-dbtype", "nucl"], stdout=PIPE, stderr=PIPE).communicate()
     admin_log(createblast_out, createblast_error, "create database:")
 
 def main():

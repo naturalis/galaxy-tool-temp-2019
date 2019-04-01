@@ -23,7 +23,7 @@ parser.add_argument('-taxonomy_db', dest='taxonomy_db', type=str, help='sqlite d
 parser.add_argument('-bold_db', dest='bold_db', type=str, help='sqlite db with bold taxonomy', required=True)
 args = parser.parse_args()
 
-def add_taxonomy(file, genbank, bold, gbif, privatebold, unite, silva):
+def add_taxonomy(file, privatebold, unite, silva):
     with open(file, "r") as blasthits, open(args.blastinputfolder.strip() + "/taxonomy_"+ os.path.basename(file), "a") as output, open(args.blastinputfolder.strip() + "/orginaltaxonomy_"+ os.path.basename(file), "a") as output2:
         for line in blasthits:
             if line.split("\t")[0] == "#Query ID":
@@ -51,15 +51,16 @@ def add_taxonomy(file, genbank, bold, gbif, privatebold, unite, silva):
                     output.write(line_taxonomy.encode('utf-8').strip()+"\n")
 
 def process_files():
-    genbank = Genbank(args.rankedlineage, args.merged)
-    gbif = Gbif(args.taxonomy_db)
-    bold = Bold(args.bold_db, args.taxonomy_db)
+    #genbank = Genbank(args.rankedlineage, args.merged)
+    #gbif = Gbif(args.taxonomy_db)
+    #bold = Bold(args.bold_db, args.taxonomy_db)
     privatebold = PrivateBold()
     unite = Unite()
     silva = Silva()
     files = [x for x in sorted(glob.glob(args.blastinputfolder.strip() + "/*.tabular"))]
     for file in files:
-        add_taxonomy(file, genbank, bold, gbif, privatebold, unite, silva)
+        #add_taxonomy(file, genbank, bold, gbif, privatebold, unite, silva)
+        add_taxonomy(file, privatebold, unite, silva)
 
 def main():
     process_files()
