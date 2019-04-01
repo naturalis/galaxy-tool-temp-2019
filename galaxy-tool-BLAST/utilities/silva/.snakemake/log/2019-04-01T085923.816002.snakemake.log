@@ -1,0 +1,19 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	1	make_database
+	2
+
+[Mon Apr  1 08:59:23 2019]
+rule make_database:
+    input: output/SILVA_132_SSUParc_tax_silva.fasta, output/taxmap_slv_ssu_parc_132.txt
+    output: output/SILVA/SILVA_132_SSUParc_tax_silva_taxonomy.fasta, output/SILVA/SILVA_132_SSUParc_tax_silva_taxonomy.fasta.nal
+    jobid: 2
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/galaxy/Tools/galaxy-tool-temp-2019/galaxy-tool-BLAST/utilities/silva/.snakemake/log/2019-04-01T085923.816002.snakemake.log
